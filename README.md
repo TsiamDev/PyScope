@@ -11,27 +11,37 @@ So, the other day I was playing around with a pet project involving electronics.
 Thus, I came upon two problems.
 1.	Generate the pulse, and
 2.	check to see if it the pulse is generated correctly.
-Arduino Code
+
+# Arduino Code
+
 To tackle the first problem, I utilized an Arduino Due that I had lying around. The problem was that digitalWrite(), digitalRead() and analogRead() were too slow for my purposes. And so, I set up, and then, directly wrote to the PIO registers of the Atmel Chip.
 First, initialize digital pin 2 as output:
- ![1](https://user-images.githubusercontent.com/56920806/167269596-9d86f326-c991-438b-8828-97d59e159b78.png)
+
+ ![3](https://user-images.githubusercontent.com/56920806/167269602-18969c61-f80d-4f48-8f1f-2d95f6594383.png)
 
 Then, write the corresponding value (HIGH, or LOW) to the pin, based on the duty cycle defined by the <cnt > counter:
- ![2](https://user-images.githubusercontent.com/56920806/167269600-a2a1d68d-89e2-40e1-956f-8a2b8b82cc65.png)
+ 
+ ![4](https://user-images.githubusercontent.com/56920806/167269606-dd1a2ade-0f16-4c9e-b4a5-8a1d003faa9e.png)
 
 The bottleneck happened when reading the pin that generated the pulse. I modified somewhat (rather, I stripped down) the code that I found here:
 https://forum.arduino.cc/t/arduino-due-adc-dma-channel-ordering-in-buffer/620520   
 First, set up the ADC on pin A0:
- ![3](https://user-images.githubusercontent.com/56920806/167269602-18969c61-f80d-4f48-8f1f-2d95f6594383.png)
+ 
+ ![1](https://user-images.githubusercontent.com/56920806/167269596-9d86f326-c991-438b-8828-97d59e159b78.png)
+ 
 
 Then, simply wait until the ADC conversion happens. Finally, read the data from pin A0:
- ![4](https://user-images.githubusercontent.com/56920806/167269606-dd1a2ade-0f16-4c9e-b4a5-8a1d003faa9e.png)
-
+ 
+![2](https://user-images.githubusercontent.com/56920806/167269600-a2a1d68d-89e2-40e1-956f-8a2b8b82cc65.png)
+ 
 Problem (1) solved!
-Python Osciloscope
+ 
+# Python Osciloscope
+ 
 And now, off to the second problem. How do I visualize correctly the data that ADC read? Well, with the trusty contemporary multitool of course! Which is none other than Python.
 The code I wrote is rather simple and most of it is for visualization purposes rather than calculations.
 Firstly, we open a connection to the Serial Port that our Arduino is connected to, we set the buffer size and clear the initial (garbage) input data:
+ 
  ![5](https://user-images.githubusercontent.com/56920806/167269613-6f462956-65c1-4a44-a88d-beb96250acff.png)
 
 Afterwards, we read the input data whenever a threshold (in bytes) is reached 
