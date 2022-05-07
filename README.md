@@ -45,19 +45,26 @@ Firstly, we open a connection to the Serial Port that our Arduino is connected t
  ![5](https://user-images.githubusercontent.com/56920806/167269613-6f462956-65c1-4a44-a88d-beb96250acff.png)
 
 Afterwards, we read the input data whenever a threshold (in bytes) is reached 
+ 
+  ![6](https://user-images.githubusercontent.com/56920806/167269616-3ee3e40b-28ba-412f-9219-cd41b31a6bcf.png)
+ 
 Then, we convert the read data to a python string and parse it (while surrounding the code with a <try> block to catch the times when input is malformed, or some other type of exception is thrown)
- ![6](https://user-images.githubusercontent.com/56920806/167269616-3ee3e40b-28ba-412f-9219-cd41b31a6bcf.png)
 
+ ![7](https://user-images.githubusercontent.com/56920806/167269624-3783dedc-ae9d-47ed-be2b-dd0acc38ce16.png)
+ 
 If the resulting list is not empty, we convert it to a list of integers, and finally we read the voltage amplitude with the calculation at line 81 (3.3 volts is the digital HIGH on Due and 4095 is the resolution of the ADC). Int_data now has the measured voltages. 
-![7](https://user-images.githubusercontent.com/56920806/167269624-3783dedc-ae9d-47ed-be2b-dd0acc38ce16.png)
+ ![8](https://user-images.githubusercontent.com/56920806/167269629-72d76aec-ad65-4564-9835-18e15d03a10c.png)
 
 The final part of the calculations, concerns triggering. To do this, we search the converted array to find the first time where the voltage goes from LOW to HIGH, and toss the previous samples.
 Int_data is now triggered. Pun intended 😊
- ![8](https://user-images.githubusercontent.com/56920806/167269629-72d76aec-ad65-4564-9835-18e15d03a10c.png)
+
+![9](https://user-images.githubusercontent.com/56920806/167269787-e0e87991-037a-45de-8922-5ed27169f389.png)
 
 The rest of the python code utilizes the matplotlib library to render the information to the screen and I consider it to be self-explanatory. Nevertheless, If you feel it should be further explained drop me  a line and I will remedy that 😊.
 Oh! Also don’t forget! At the end, we close the port we opened.
 Here is a sample output!
  
-Till next time, have a good one!
+ ![scope_demo](https://user-images.githubusercontent.com/56920806/167269790-a3521bcc-75bc-4802-9ed5-b66e9f8ad285.png)
+
+# Till next time, have a good one!
 
